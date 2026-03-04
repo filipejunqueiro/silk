@@ -1,11 +1,12 @@
 ---@class Result
 ---@field data any
 ---@field error string
----@field IsSuccess boolean
----@field IsFailure boolean
+---@field isSuccess boolean
+---@field isFailure boolean
 
 local Promise = promise
 local Await = Citizen.Await
+local ResourceName = GetCurrentResourceName()
 
 ---@param fn function
 ---@param query string
@@ -20,7 +21,7 @@ local function await(fn, query, parameters)
         end
 
         promise:resolve(result)
-    end)
+    end, ResourceName, true)
 
     return Await(promise)
 end
@@ -33,6 +34,7 @@ for _, method in pairs({
     "single",
     "insert",
     "update",
+    "isReady",
 }) do
     Silk[method] = setmetatable(
         {
