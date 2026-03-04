@@ -47,29 +47,19 @@ description '${pkg.description}'
 version '${pkg.version}'
 author '${pkg.author}'
 
-server_script 'dist/build.js'
-
-convar_category 'Trunk' {
-  'Configuration',
-  {
-    { 'Connection string', 'postgres_connection_string', 'CV_STRING', 'postgres://user:password@localhost/database' },
-    { 'Debug', 'postgres_debug', 'CV_BOOL', 'false' },
-    { 'Slow query warning (ms)', 'postgres_slow_query_warning', 'CV_INT', '150' }
-  }
-}`,
+server_script 'dist/build.js'`,
   );
 
   const bundle = await rolldown({
     input: "src/index.ts",
     resolve: { extensions: [".ts", ".js"] },
     treeshake: true,
-    external: ["postgres"],
+    external: ["surrealdb"],
   });
 
   await bundle.write({
     dir: "dist",
     entryFileNames: "build.js",
-    format: "cjs",
     sourcemap: false,
     minify: true,
   });
