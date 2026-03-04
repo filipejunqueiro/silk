@@ -1,0 +1,28 @@
+{
+  "name": "silk",
+  "description": "Silk is a cfx.re resource that communicates with a Surreal database",
+  "version": "0.0.0",
+  "author": "filipejunqueiro",
+  "license": "LGPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/filipejunqueiro/silk.git"
+  },
+  "type": "module",
+  "types": "lib/silk.d.ts",
+  "scripts": {
+    "build": "bun index.ts",
+    "build:types": "bun run build --types",
+    "build:cleanup": "bun run build --cleanup",
+    "build:watch": "bun run build --watch",
+    "build:watch:types": "bun run build:types --watch"
+  },
+  "devDependencies": {
+    "@citizenfx/server": "^2.0.26389-1",
+    "@types/bun": "latest",
+    "rolldown": "^1.0.0-rc.6"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
