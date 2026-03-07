@@ -41,6 +41,7 @@ game 'common'
 lua54 'yes'
 node_version '22'
 use_experimental_fxv2_oal 'yes'
+server_only 'yes'
 
 name '${pkg.name}'
 description '${pkg.description}'

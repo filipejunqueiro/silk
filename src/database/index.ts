@@ -1,7 +1,7 @@
 import { MethodArguments, DatabaseConfig, QueryType } from "@/types";
 import { Result } from "@/utils/result";
 import { Surreal } from "surrealdb";
-import { ParseResponse } from "@/utils/parseResponse";
+import { ParseResult } from "@/utils/parseResult";
 import { Print } from "@/utils/print";
 
 export class Database {
@@ -36,7 +36,8 @@ export class Database {
 
         Print.write("Database connection established!", "success");
       } catch (error) {
-        const message = error instanceof Error ? error.message : "Unknow Error";
+        const message =
+          error instanceof Error ? error.message : "Unknown Error";
 
         throw new Error(`Database connection failed: ${message}`);
       }
@@ -45,6 +46,10 @@ export class Database {
     return Database._instance;
   }
 
+  /**
+   * @summary Executes a SurrealQL query.
+   * @returns A shaped result based on the query type.
+   */
   private async rawQuery<T>(
     queryType: QueryType,
     {
@@ -56,27 +61,43 @@ export class Database {
     try {
       const [data] = await this._database.query(query, parameters).collect();
 
-      return Result.success<T>(ParseResponse(queryType, data) as T);
+      return Result.success<T>(ParseResult(queryType, data) as T);
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Unknow Error";
+      const message = error instanceof Error ? error.message : "Unknown Error";
 
       return Result.failure<T>(message);
     }
   }
 
-  public execute(args: MethodArguments): Promise<Result<unknown>> {
+  /**
+   * @summary Executes a SurrealQL query and returns all matching records.
+   * @returns An array of records, or null if no records were found.
+   */
+  public execute<T = unknown>(args: MethodArguments): Promise<Result<T>> {
     return this.rawQuery("execute", args);
   }
 
-  public single(args: MethodArguments): Promise<Result<unknown>> {
+  /**
+   * @summary Executes a SurrealQL query and returns the first matching record.
+   * @returns The first matching record, or null if no record was found.
+   */
+  public single<T = unknown>(args: MethodArguments): Promise<Result<T>> {
     return this.rawQuery("single", args);
   }
 
-  public insert(args: MethodArguments): Promise<Result<unknown>> {
+  /**
+   * @summary Inserts a new record into the database.
+   * @returns The full created record.
+   */
+  public insert<T = unknown>(args: MethodArguments): Promise<Result<T>> {
     return this.rawQuery("insert", args);
   }
 
-  public update(args: MethodArguments): Promise<Result<unknown>> {
+  /**
+   * @summary Updates one or more existing records in the database.
+   * @returns The full updated record.
+   */
+  public update<T = unknown>(args: MethodArguments): Promise<Result<T>> {
     return this.rawQuery("update", args);
   }
 }
