@@ -24,11 +24,12 @@ DEFINE FIELD banned_by ON TABLE ban TYPE record<player>;
 DEFINE TABLE character SCHEMAFULL;
 
 DEFINE FIELD player_id ON TABLE character TYPE record<player>;
-DEFINE FIELD information ON TABLE character TYPE object DEFAULT {};
-DEFINE FIELD licenses ON TABLE character TYPE object DEFAULT {};
-DEFINE FIELD organizations ON TABLE character TYPE object DEFAULT {};
-DEFINE FIELD position ON TABLE character TYPE object DEFAULT {};
-DEFINE FIELD inventory ON TABLE character TYPE object DEFAULT {};
+DEFINE FIELD information ON TABLE character TYPE object FLEXIBLE DEFAULT {};
+DEFINE FIELD licenses ON TABLE character TYPE object FLEXIBLE DEFAULT {};
+DEFINE FIELD organizations ON TABLE character TYPE object FLEXIBLE DEFAULT {};
+DEFINE FIELD position ON TABLE character TYPE object FLEXIBLE DEFAULT {};
+DEFINE FIELD inventory ON TABLE character TYPE object FLEXIBLE DEFAULT {};
 DEFINE FIELD last_played ON TABLE character TYPE datetime DEFAULT time::now();
 
-DEFINE INDEX unique_character ON TABLE character COLUMNS name UNIQUE;
+DEFINE FIELD information_hash ON TABLE character VALUE crypto::sha256(type::string(information));
+DEFINE INDEX unique_character ON TABLE character COLUMNS player_id, information_hash UNIQUE;
