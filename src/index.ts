@@ -1,6 +1,9 @@
 import type { CFXCallback, CFXParameters } from "@/types";
+import { Database } from "./database";
 
 const Silk = {} as Record<string, Function>;
+
+const db = await Database.getInstance();
 
 Silk.query = (
   query: string,
@@ -8,9 +11,7 @@ Silk.query = (
   callback: CFXCallback,
   invokingResource = GetInvokingResource(),
   isPromise?: boolean,
-) => {
-  // TODO: Impl this
-};
+) => db.query(query, parameters, callback, invokingResource, isPromise);
 
 Silk.single = (
   query: string,
@@ -18,9 +19,7 @@ Silk.single = (
   callback: CFXCallback,
   invokingResource = GetInvokingResource(),
   isPromise?: boolean,
-) => {
-  // TODO: Impl this
-};
+) => db.single(query, parameters, callback, invokingResource, isPromise);
 
 Silk.insert = (
   query: string,
@@ -28,9 +27,7 @@ Silk.insert = (
   callback: CFXCallback,
   invokingResource = GetInvokingResource(),
   isPromise?: boolean,
-) => {
-  // TODO: Impl this
-};
+) => db.insert(query, parameters, callback, invokingResource, isPromise);
 
 Silk.update = (
   query: string,
@@ -38,13 +35,7 @@ Silk.update = (
   callback: CFXCallback,
   invokingResource = GetInvokingResource(),
   isPromise?: boolean,
-) => {
-  // TODO: Impl this
-};
-
-Silk.isReady = () => {
-  // TODO: Impl this
-};
+) => db.update(query, parameters, callback, invokingResource, isPromise);
 
 for (const key in Silk) {
   const method = Silk[key];

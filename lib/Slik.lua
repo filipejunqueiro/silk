@@ -1,8 +1,7 @@
 ---@class Result
 ---@field data any
----@field error string
 ---@field isSuccess boolean
----@field isFailure boolean
+---@field error string
 
 local Promise = promise
 local Await = Citizen.Await
@@ -34,7 +33,6 @@ for _, method in pairs({
     "single",
     "insert",
     "update",
-    "isReady",
 }) do
     Silk[method] = setmetatable(
         {
