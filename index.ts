@@ -37,7 +37,7 @@ const build = async () => {
   writeFileSync(
     "fxmanifest.lua",
     `fx_version 'cerulean'
-game 'gta5'
+game 'common'
 lua54 'yes'
 node_version '22'
 use_experimental_fxv2_oal 'yes'
